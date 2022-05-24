@@ -8,6 +8,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -16,6 +18,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public record PortalRegistrySyncPacket(PortalLink link) {
 
         public static void sendForcePacket(ServerPlayerEntity player, BlockPos pos) {
@@ -43,7 +46,8 @@ public record PortalRegistrySyncPacket(PortalLink link) {
         MinecraftForge.EVENT_BUS.addListener(PortalRegistrySyncPacket::onPlayerJoinWorld);
     }
 
-    private static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
+    @SubscribeEvent
+    public static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof ServerPlayerEntity player) {
             for (PortalLink link : CustomPortalApiRegistry.getAllPortalLinks()) {
                 NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PortalRegistrySyncPacket(link));

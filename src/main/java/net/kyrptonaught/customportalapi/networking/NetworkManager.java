@@ -30,8 +30,5 @@ public class NetworkManager {
         return nextId++;
     }
 
-    public static void onInitializeServer() {
-        register();
-        PortalRegistrySyncPacket.registerSyncOnPlayerJoin();
-    }
+
 }

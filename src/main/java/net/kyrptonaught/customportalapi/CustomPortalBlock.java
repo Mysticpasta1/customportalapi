@@ -1,6 +1,7 @@
 package net.kyrptonaught.customportalapi;
 
 import net.kyrptonaught.customportalapi.client.CustomPortalsModClient;
+import net.kyrptonaught.customportalapi.init.ParticleInit;
 import net.kyrptonaught.customportalapi.interfaces.EntityInCustomPortal;
 import net.kyrptonaught.customportalapi.portal.frame.PortalFrameTester;
 import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
@@ -92,7 +93,7 @@ public class CustomPortalBlock extends Block {
                 f = (double) pos.getZ() + 0.5D + 0.25D * (double) k;
                 j = random.nextFloat() * 2.0F * (float) k;
             }
-            world.addParticle(new BlockStateParticleEffect(CustomPortalsModClient.CUSTOMPORTALPARTICLE.get(), getPortalBase(world, pos).getDefaultState()), d, e, f, g, h, j);
+            world.addParticle(new BlockStateParticleEffect(ParticleInit.CUSTOMPORTALPARTICLE.get(), getPortalBase(world, pos).getDefaultState()), d, e, f, g, h, j);
         }
     }
 

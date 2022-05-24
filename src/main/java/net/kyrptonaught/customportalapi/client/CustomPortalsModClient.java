@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.CustomPortalsMod;
 import net.kyrptonaught.customportalapi.PerWorldPortals;
+import net.kyrptonaught.customportalapi.init.ParticleInit;
 import net.kyrptonaught.customportalapi.mixin.client.ChunkRendererRegionAccessor;
 import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
 import net.kyrptonaught.customportalapi.util.PortalLink;
@@ -21,25 +22,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = CustomPortalsMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CustomPortalsModClient {
-    public static DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, CustomPortalsMod.MOD_ID);
 
 
-    public static final RegistryObject<ParticleType<BlockStateParticleEffect>> CUSTOMPORTALPARTICLE = PARTICLES.register("customportalparticle", () -> new ParticleType<BlockStateParticleEffect>(false, BlockStateParticleEffect.PARAMETERS_FACTORY) {
-        private Codec<BlockStateParticleEffect> codec = BlockStateParticleEffect.createCodec(this);
-        @Override
-        public Codec<BlockStateParticleEffect> getCodec() {
-            return codec;
-        }
-    });
 
-    private static void onBlockColors(ColorHandlerEvent.Block event) {
+
+    @SubscribeEvent
+    public static void onBlockColors(ColorHandlerEvent.Block event) {
         event.getBlockColors().registerColorProvider((state, world, pos, tintIndex) -> {
             if (pos != null && world instanceof ChunkRendererRegion) {
                 Block block = CustomPortalHelper.getPortalBase(((ChunkRendererRegionAccessor) world).getWorld(), pos);
@@ -50,19 +47,15 @@ public class CustomPortalsModClient {
         }, CustomPortalsMod.portalBlock);
     }
 
-    public static void onInitializeClient(IEventBus bus) {
-        PARTICLES.register(bus);
-        bus.addListener(CustomPortalsModClient::onBlockColors);
-        bus.addListener(CustomPortalsModClient::onClientSetup);
 
-        bus.addListener(CustomPortalsModClient::onParticleFactoryRegistry);
-    }
 
+    @SubscribeEvent
     public static void onParticleFactoryRegistry(final ParticleFactoryRegisterEvent event) {
-        MinecraftClient.getInstance().particleManager.registerFactory(CUSTOMPORTALPARTICLE.get(), CustomPortalParticle.Factory::new);
+        MinecraftClient.getInstance().particleManager.registerFactory(ParticleInit.CUSTOMPORTALPARTICLE.get(), CustomPortalParticle.Factory::new);
     }
 
-    private static void onClientSetup(FMLClientSetupEvent event) {
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> RenderLayers.setRenderLayer(CustomPortalsMod.portalBlock, RenderLayer.getTranslucent()));
 
         MinecraftClient.getInstance().getGame().setSessionEventListener(new SessionEventListener() {

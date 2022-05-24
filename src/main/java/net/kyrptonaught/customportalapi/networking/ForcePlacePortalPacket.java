@@ -1,6 +1,7 @@
 package net.kyrptonaught.customportalapi.networking;
 
 import net.kyrptonaught.customportalapi.CustomPortalsMod;
+import net.kyrptonaught.customportalapi.client.ClientHandler;
 import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -31,11 +32,7 @@ public record ForcePlacePortalPacket(BlockPos pos) {
     }
 
     public static void handle(ForcePlacePortalPacket packet, Supplier<NetworkEvent.Context> contextSupplier) {
-        MinecraftClient.getInstance().execute(() -> {
-            World world = MinecraftClient.getInstance().world;
-            BlockState oldState = world.getBlockState(packet.pos());
-            world.setBlockState(packet.pos(), CustomPortalHelper.blockWithAxis(CustomPortalsMod.getDefaultPortalBlock().getDefaultState(), CustomPortalHelper.getAxisFrom(oldState)));
-        });
+        ClientHandler.forcePortal(packet);
         contextSupplier.get().setPacketHandled(true);
     }
 

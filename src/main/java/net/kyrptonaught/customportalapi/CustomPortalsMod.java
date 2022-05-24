@@ -1,6 +1,7 @@
 package net.kyrptonaught.customportalapi;
 
 import net.kyrptonaught.customportalapi.client.CustomPortalsModClient;
+import net.kyrptonaught.customportalapi.init.ParticleInit;
 import net.kyrptonaught.customportalapi.networking.NetworkManager;
 import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
 import net.kyrptonaught.customportalapi.portal.PortalPlacer;
@@ -25,7 +26,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 
@@ -34,6 +37,7 @@ import java.util.HashMap;
 import static net.kyrptonaught.customportalapi.CustomPortalsMod.MOD_ID;
 
 @Mod(MOD_ID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CustomPortalsMod {
     public static final String MOD_ID = "customportalapi";
 
@@ -50,9 +54,8 @@ public class CustomPortalsMod {
 
         BLOCKS.register(bus);
 
-        CustomPortalsModClient.onInitializeClient(bus);
+        ParticleInit.PARTICLES.register(bus);
         onInitialize(bus);
-        NetworkManager.onInitializeServer();
     }
 
     private void onServerStart(ServerStartedEvent event) {
@@ -108,5 +111,10 @@ public class CustomPortalsMod {
     static {
         portalBlock = new CustomPortalBlock(Block.Settings.of(Material.PORTAL).noCollision().strength(-1).sounds(BlockSoundGroup.GLASS).luminance(state -> 11));
         BLOCKS.register("customportalblock", () -> portalBlock);
+    }
+
+    @SubscribeEvent
+    public static void onCommonStartUp(FMLCommonSetupEvent event) {
+        NetworkManager.register();
     }
 }
