@@ -44,7 +44,7 @@ public class CustomPortalsModClient {
                 if (link != null) return link.colorID;
             }
             return 1908001;
-        }, CustomPortalsMod.portalBlock);
+        }, CustomPortalsMod.customPortalBlock.get());
     }
 
 
@@ -56,7 +56,7 @@ public class CustomPortalsModClient {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> RenderLayers.setRenderLayer(CustomPortalsMod.portalBlock, RenderLayer.getTranslucent()));
+        event.enqueueWork(() -> RenderLayers.setRenderLayer(CustomPortalsMod.customPortalBlock.get(), RenderLayer.getTranslucent()));
 
         MinecraftClient.getInstance().getGame().setSessionEventListener(new SessionEventListener() {
             @Override

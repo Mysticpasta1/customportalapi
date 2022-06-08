@@ -1,6 +1,5 @@
 package net.kyrptonaught.customportalapi;
 
-import net.kyrptonaught.customportalapi.client.CustomPortalsModClient;
 import net.kyrptonaught.customportalapi.init.ParticleInit;
 import net.kyrptonaught.customportalapi.interfaces.EntityInCustomPortal;
 import net.kyrptonaught.customportalapi.portal.frame.PortalFrameTester;
