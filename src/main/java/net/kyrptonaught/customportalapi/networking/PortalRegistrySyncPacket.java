@@ -7,7 +7,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
@@ -47,7 +47,7 @@ public record PortalRegistrySyncPacket(PortalLink link) {
     }
 
     @SubscribeEvent
-    public static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
+    public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof ServerPlayerEntity player) {
             for (PortalLink link : CustomPortalApiRegistry.getAllPortalLinks()) {
                 NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PortalRegistrySyncPacket(link));

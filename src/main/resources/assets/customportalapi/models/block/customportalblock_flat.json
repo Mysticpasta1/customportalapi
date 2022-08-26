@@ -1,4 +1,5 @@
 {
+  "render_type": "translucent",
   "textures": {
     "particle": "customportalapi:block/customportalblock",
     "portal": "customportalapi:block/customportalblock"

@@ -13,6 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,8 +41,8 @@ public abstract class ClientPlayerMixin extends PlayerEntity implements EntityIn
     @Final
     protected MinecraftClient client;
 
-    public ClientPlayerMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
-        super(world, pos, yaw, profile);
+    public ClientPlayerMixin(World world, BlockPos pos, float yaw, GameProfile profile, PlayerPublicKey publicKey) {
+        super(world, pos, yaw, profile, publicKey);
     }
 
     @Shadow

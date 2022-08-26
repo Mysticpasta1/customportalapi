@@ -28,7 +28,7 @@ public class WorldRendererMixin {
     private MinecraftClient client;
 
     @Redirect(method = "processWorldEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
-    public void CPA$postTPSoundEvent(SoundManager instance, SoundInstance sound, PlayerEntity source, int eventId, BlockPos pos, int data) {
+    public void CPA$postTPSoundEvent(SoundManager instance, SoundInstance sound, int eventId, BlockPos pos, int data) {
         if (eventId == 1032 && data != 0) {
             Block block = Registry.BLOCK.get(data);
             PortalLink link = CustomPortalApiRegistry.getPortalLinkFromBase(block);

@@ -9,6 +9,7 @@ import net.kyrptonaught.customportalapi.portal.frame.VanillaPortalAreaHelper;
 import net.kyrptonaught.customportalapi.portal.linking.PortalLinkingStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
@@ -42,7 +44,7 @@ import static net.kyrptonaught.customportalapi.CustomPortalsMod.MOD_ID;
 public class CustomPortalsMod {
     public static final String MOD_ID = "customportalapi";
 
-    public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(Block.class, MOD_ID);
+    public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
 
     public static HashMap<Identifier, RegistryKey<World>> dims = new HashMap<>();
     public static Identifier VANILLAPORTAL_FRAMETESTER = new Identifier(MOD_ID, "vanillanether");
@@ -66,20 +68,22 @@ public class CustomPortalsMod {
     }
 
     private void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        PlayerEntity player = event.getPlayer();
-        World world = event.getWorld();
+        Entity entity = event.getEntity();
+        World world = event.getLevel();
         Hand hand = event.getHand();
 
-        ItemStack stack = player.getStackInHand(hand);
-        if (!world.isClient) {
-            Item item = stack.getItem();
-            if (PortalIgnitionSource.isRegisteredIgnitionSourceWith(item)) {
-                HitResult hit = player.raycast(6, 1, false);
-                if (hit.getType() == HitResult.Type.BLOCK) {
-                    BlockHitResult blockHit = (BlockHitResult) hit;
-                    BlockPos usedBlockPos = blockHit.getBlockPos();
-                    if (PortalPlacer.attemptPortalLight(world, usedBlockPos.offset(blockHit.getSide()), PortalIgnitionSource.ItemUseSource(item))) {
-                        event.setResult(Event.Result.ALLOW);
+        if (entity instanceof PlayerEntity player) {
+            ItemStack stack = player.getStackInHand(hand);
+            if (!world.isClient) {
+                Item item = stack.getItem();
+                if (PortalIgnitionSource.isRegisteredIgnitionSourceWith(item)) {
+                    HitResult hit = player.raycast(6, 1, false);
+                    if (hit.getType() == HitResult.Type.BLOCK) {
+                        BlockHitResult blockHit = (BlockHitResult) hit;
+                        BlockPos usedBlockPos = blockHit.getBlockPos();
+                        if (PortalPlacer.attemptPortalLight(world, usedBlockPos.offset(blockHit.getSide()), PortalIgnitionSource.ItemUseSource(item))) {
+                            event.setResult(Event.Result.ALLOW);
+                        }
                     }
                 }
             }
