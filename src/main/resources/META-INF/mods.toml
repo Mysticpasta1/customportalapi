@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/kyrptonaught/customportalapi/issues" #option
 
 modId="customportalapi" #mandatory
 
-version="0.0.1-beta50-1.19.2" #mandatory
+version="0.0.1-beta51-1.19.2" #mandatory
 
 displayName="Custom Portal Api [Forge]" #mandatory
 
