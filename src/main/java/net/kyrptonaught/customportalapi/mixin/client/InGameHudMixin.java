@@ -24,7 +24,7 @@ public class InGameHudMixin {
 
     @Shadow
     @Final
-    private MinecraftClient client;
+    protected MinecraftClient client;
 
     @Redirect(method = "renderPortalOverlay", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderColor(FFFF)V"))
     public void changeColor(float red, float green, float blue, float alpha) {

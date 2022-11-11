@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class WorldRendererMixin {
 
     @Shadow
-    private ClientWorld world;
-
-    @Shadow
     @Final
     private MinecraftClient client;
 
