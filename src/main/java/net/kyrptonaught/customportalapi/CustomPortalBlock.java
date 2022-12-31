@@ -49,7 +49,8 @@ public class CustomPortalBlock extends Block {
         };
     }
 
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+    @SuppressWarnings("deprecation")
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
         Block block = getPortalBase((World) world, pos);
         PortalLink link = CustomPortalApiRegistry.getPortalLinkFromBase(block);
         if (link != null) {

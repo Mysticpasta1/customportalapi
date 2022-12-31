@@ -13,10 +13,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraftforge.registries.RegistryObject;
-
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -40,8 +38,9 @@ public class CustomPortalBuilder {
      * Register the portal when completed.
      * This should be called last, only when you are finished configuring the portal
      */
-    public void registerPortal() {
-        CustomPortalApiRegistry.addPortal(Registry.BLOCK.get(portalLink.block), portalLink);
+    @SuppressWarnings("deprecation")
+	public void registerPortal() {
+        CustomPortalApiRegistry.addPortal(Registries.BLOCK.get(portalLink.block), portalLink);
     }
 
     /**
@@ -59,8 +58,9 @@ public class CustomPortalBuilder {
      *
      * @param block The Block to be used as the portal's frame block
      */
-    public CustomPortalBuilder frameBlock(Block block) {
-        portalLink.block = Registry.BLOCK.getId(block);
+    @SuppressWarnings("deprecation")
+	public CustomPortalBuilder frameBlock(Block block) {
+        portalLink.block = Registries.BLOCK.getId(block);
         return this;
     }
 
