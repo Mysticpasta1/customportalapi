@@ -10,7 +10,8 @@ import net.minecraft.world.World;
 public class ClientHandler {
     public static void forcePortal(ForcePlacePortalPacket packet) {
         MinecraftClient.getInstance().execute(() -> {
-            World world = MinecraftClient.getInstance().world;
+            @SuppressWarnings("resource")
+			World world = MinecraftClient.getInstance().world;
             BlockState oldState = world.getBlockState(packet.pos());
             world.setBlockState(packet.pos(), CustomPortalHelper.blockWithAxis(CustomPortalsMod.getDefaultPortalBlock().getDefaultState(), CustomPortalHelper.getAxisFrom(oldState)));
         });

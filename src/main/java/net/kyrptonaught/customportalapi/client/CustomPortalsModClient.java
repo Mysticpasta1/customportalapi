@@ -25,7 +25,8 @@ public class CustomPortalsModClient {
 
 
 
-    @SubscribeEvent
+    @SuppressWarnings("deprecation")
+	@SubscribeEvent
     public static void onBlockColors(RegisterColorHandlersEvent.Block event) {
         event.getBlockColors().registerColorProvider((state, world, pos, tintIndex) -> {
             if (pos != null && world instanceof ChunkRendererRegion) {
@@ -39,7 +40,8 @@ public class CustomPortalsModClient {
 
 
 
-    @SubscribeEvent
+    @SuppressWarnings({ "resource", "deprecation" })
+	@SubscribeEvent
     public static void onParticleFactoryRegistry(final RegisterParticleProvidersEvent event) {
         MinecraftClient.getInstance().particleManager.registerFactory(ParticleInit.CUSTOMPORTALPARTICLE.get(), CustomPortalParticle.Factory::new);
     }
