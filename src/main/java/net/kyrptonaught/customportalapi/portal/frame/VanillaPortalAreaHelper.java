@@ -8,7 +8,6 @@ import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.util.math.BlockPos;
@@ -75,9 +74,7 @@ public class VanillaPortalAreaHelper extends PortalFrameTester {
     }
 
     public Optional<PortalFrameTester> getNewPortal(WorldAccess worldAccess, BlockPos blockPos, Direction.Axis axis, Block... foundations) {
-        return getOrEmpty(worldAccess, blockPos, (customAreaHelper) -> {
-            return customAreaHelper.isValidFrame() && customAreaHelper.foundPortalBlocks == 0;
-        }, axis, foundations);
+        return getOrEmpty(worldAccess, blockPos, (customAreaHelper) -> customAreaHelper.isValidFrame() && customAreaHelper.foundPortalBlocks == 0, axis, foundations);
     }
 
     public Optional<PortalFrameTester> getOrEmpty(WorldAccess worldAccess, BlockPos blockPos, Predicate<PortalFrameTester> predicate, Direction.Axis axis, Block... foundations) {
@@ -115,12 +112,12 @@ public class VanillaPortalAreaHelper extends PortalFrameTester {
     }
 
     protected boolean isEmptySpace(BlockState blockState) {
-        return blockState.getMaterial().isReplaceable() && !blockState.getMaterial().isLiquid();
+        return blockState.isReplaceable() && !blockState.isLiquid();
     }
 
     protected boolean canHoldPortal(World world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos);
-        return blockState.getMaterial().isSolid() && blockState.isSolidBlock(world, pos) && !blockState.getMaterial().isLiquid() && !blockState.getMaterial().equals(Material.LEAVES);
+        return blockState.isSolid() && blockState.isSolidBlock(world, pos) && !blockState.isLiquid();
     }
 
     @Override
@@ -203,12 +200,12 @@ public class VanillaPortalAreaHelper extends PortalFrameTester {
     }
 
     protected void fillAirAroundPortal(World world, BlockPos pos) {
-        if (world.getBlockState(pos).getMaterial().isSolid() || world.getBlockState(pos).isSolidBlock(world, pos))
+        if (world.getBlockState(pos).isSolid() || world.getBlockState(pos).isSolidBlock(world, pos))
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.FORCE_STATE);
     }
 
     protected void placeLandingPad(World world, BlockPos pos, BlockState frameBlock) {
-        if (!world.getBlockState(pos).getMaterial().isSolid())
+        if (!world.getBlockState(pos).isSolid())
             world.setBlockState(pos, frameBlock);
     }
 }

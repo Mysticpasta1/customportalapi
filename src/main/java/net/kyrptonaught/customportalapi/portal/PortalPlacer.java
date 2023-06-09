@@ -70,6 +70,6 @@ public class PortalPlacer {
     }
 
     private static boolean canHoldPortal(BlockState state) {
-        return state.getMaterial().isSolid();
+        return state.isSolid();
     }
 }

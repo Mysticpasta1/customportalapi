@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[46,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 
 license="MIT"
 
@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/kyrptonaught/customportalapi/issues" #option
 
 modId="customportalapi" #mandatory
 
-version="0.0.1-beta69-1.19.3" #mandatory
+version="0.0.1-beta1-1.20" #mandatory
 
 displayName="Custom Portal Api [Forge]" #mandatory
 
@@ -18,7 +18,7 @@ displayURL="https://github.com/kyrptonaught/customportalapi" #optional
 
 logoFile="icon.png" #optional
 
-credits="kyrptonaught (main author of the fabric version), Waterpicker (for the forge port) ,Mysticpasta1 (for the forge toml and port to 1.18.2)" #optional
+credits="kyrptonaught (main author of the fabric version), Waterpicker (for the forge port) ,Mysticpasta1 (for the forge toml and port to 1.18.2+)" #optional
 
 authors="kyrptonaught, Waterpicker, Mysticpasta1" #optional
 
@@ -29,13 +29,13 @@ Create portals out of anything!
 [[dependencies.customportalapi]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[40,)" #mandatory
+    versionRange="[46,)" #mandatory
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.customportalapi]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2, 1.20)"
+    versionRange="[1.20, 1.21)"
     ordering="NONE"
     side="BOTH"

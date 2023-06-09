@@ -1,6 +1,5 @@
 package net.kyrptonaught.customportalapi;
 
-import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.kyrptonaught.customportalapi.init.ParticleInit;
 import net.kyrptonaught.customportalapi.networking.NetworkManager;
 import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
@@ -10,12 +9,10 @@ import net.kyrptonaught.customportalapi.portal.frame.VanillaPortalAreaHelper;
 import net.kyrptonaught.customportalapi.portal.linking.PortalLinkingStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Hand;
@@ -112,7 +109,7 @@ public class CustomPortalsMod {
     // to guarantee block exists before use, unsure how safe this is but works for now. Don't want to switch to using a custom entrypoint to break compatibility with existing mods just yet
     //todo fix this with CustomPortalBuilder?
 
-    public static final RegistryObject<CustomPortalBlock> customPortalBlock = registerOnlyBlock("custom_portal_block", () -> new CustomPortalBlock(Block.Settings.of(Material.PORTAL).noCollision().strength(-1).sounds(BlockSoundGroup.GLASS).luminance(state -> 11)));
+    public static final RegistryObject<CustomPortalBlock> customPortalBlock = registerOnlyBlock("custom_portal_block", () -> new CustomPortalBlock(Block.Settings.copy(Blocks.NETHER_PORTAL).noCollision().strength(-1).sounds(BlockSoundGroup.GLASS).luminance(state -> 11)));
 
     public static <T extends Block> RegistryObject<T> registerOnlyBlock(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

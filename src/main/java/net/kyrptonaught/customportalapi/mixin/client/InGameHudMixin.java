@@ -7,6 +7,7 @@ import net.kyrptonaught.customportalapi.util.ColorUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.block.BlockModels;
 import net.minecraft.client.texture.Sprite;
@@ -26,8 +27,8 @@ public class InGameHudMixin {
     @Final
     protected MinecraftClient client;
 
-    @Redirect(method = "renderPortalOverlay", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderColor(FFFF)V"))
-    public void changeColor(float red, float green, float blue, float alpha) {
+    @Redirect(method = "renderPortalOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;setShaderColor(FFFF)V"))
+    public void changeColor(DrawContext context, float red, float green, float blue, float alpha) {
         int color = ((ClientPlayerInColoredPortal) client.player).getLastUsedPortalColor();
         if (color >= 0) {
             float[] colors = ColorUtil.getColorForBlock(color);
