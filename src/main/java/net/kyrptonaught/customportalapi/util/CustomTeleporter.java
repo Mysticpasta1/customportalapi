@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -32,7 +33,28 @@ public class CustomTeleporter {
         if (link == null) return;
         if (link.getBeforeTPEvent().execute(entity) == SHOULDTP.CANCEL_TP)
             return;
-        RegistryKey<World> destKey = world.getRegistryKey() == CustomPortalsMod.dims.get(link.dimID) ? CustomPortalsMod.dims.get(link.returnDimID) : CustomPortalsMod.dims.get(link.dimID);
+
+        Identifier destID = link.dimID;
+        if (world.getRegistryKey().getValue().equals(link.dimID)) {
+            if (link.returnDimID != null) {
+                destID = link.returnDimID;
+            } else {
+                Direction.Axis portalAxis = CustomPortalHelper.getAxisFrom(entity.getEntityWorld().getBlockState(portalPos));
+                PortalFrameTester.PortalFrameTesterFactory portalFrameTesterFactory = link.getFrameTester();
+                BlockLocating.Rectangle fromPortalRectangle = portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(entity.getEntityWorld(), portalPos, portalAxis, portalBase).getRectangle();
+                DimensionalBlockPos destinationPos = CustomPortalsMod.portalLinkingStorage.getDestination(fromPortalRectangle.lowerLeft, entity.getEntityWorld().getRegistryKey());
+                if (destinationPos != null) {
+                    destID = destinationPos.dimensionType;
+                }
+            }
+        }
+
+        RegistryKey<World> destKey = CustomPortalsMod.dims.get(destID);
+        if (destKey == null) {
+            CustomPortalsMod.logError("Destination dimension not found: " + destID);
+            return;
+        }
+
         ServerWorld destination = ((ServerWorld) world).getServer().getWorld(destKey);
         if (destination == null) return;
 

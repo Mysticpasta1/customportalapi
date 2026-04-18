@@ -16,7 +16,7 @@ public class PortalLink {
     public PortalIgnitionSource portalIgnitionSource = PortalIgnitionSource.FIRE;
     private CustomPortalBlock portalBlock = CustomPortalsMod.customPortalBlock.get();
     public Identifier dimID;
-    public Identifier returnDimID = new Identifier("overworld");
+    public Identifier returnDimID;
     public boolean onlyIgnitableInReturnDim = false;
     public int colorID;
     public int forcedWidth, forcedHeight;
@@ -31,9 +31,10 @@ public class PortalLink {
 
     }
 
-    public PortalLink(Identifier blockID, Identifier dimID, int colorID) {
+    public PortalLink(Identifier blockID, Identifier dimID, Identifier returnDimID, int colorID) {
         this.block = blockID;
         this.dimID = dimID;
+        this.returnDimID = returnDimID;
         this.colorID = colorID;
     }
 
